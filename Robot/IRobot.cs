@@ -9,6 +9,7 @@ namespace Robot
     public interface IRobot
     {
         //public Task<bool> Move(int pivotDegrees, double meters);
-        public Task<string> MoveStr(int pivotDegrees, double meters);
+//        public Task<string> MoveStr(int pivotDegrees, double meters);
+        public Task<int[]> Move(int pivotDegrees, int cm); // Returns array[x,y]
     }
 }
