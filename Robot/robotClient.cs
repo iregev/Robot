@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using HtmlAgilityPack;
+using Newtonsoft.Json.Linq;
 
 namespace Robot
 {
@@ -23,6 +24,15 @@ namespace Robot
             //var metersMoved = await new HttpClient().Send();
             //return metersMoved == meters;
             return txt.InnerText;
+
+        }
+
+        public async Task<string> MoveJson(int pivotDegrees, double meters)
+        {
+            var response = await client.GetStringAsync("https://reqres.in/api/products/3");
+            JObject rss = JObject.Parse(response);
+            string rssVal = (string)rss["data"]["id"];
+            return rssVal;
 
         }
     }
