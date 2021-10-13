@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Text.Json;
+//using Newtonsoft.Json.Linq;
 
 // https://stackoverflow.com/questions/56067810/how-do-i-get-the-position-of-an-active-mrtk-pointer
 // https://stackoverflow.com/questions/56767566/how-to-always-get-the-tip-of-a-raycast
 public class handray : MonoBehaviour, IMixedRealityPointerHandler
 {
+    public GameObject spawnObject;
+
     public InputSourceType sourceType = InputSourceType.Hand;
     private static readonly HttpClient client = new HttpClient();
     public string URL;
@@ -29,7 +31,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
             CoreServices.InputSystem.Unregister(gameObject);
         }
     }
-
+     
     public void OnPointerDown(MixedRealityPointerEventData eventData)
     {
         if (eventData.InputSource.SourceType == sourceType)
@@ -61,6 +63,12 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         Debug.Log(startPoint - endPoint);
         Debug.Log(norm);
         Debug.Log(theta);
+        /*
+        var urlTask = Task.Run(() => Move((int)norm, (int)theta));
+        var urlResult = urlTask.Result;
+        Debug.Log(urlResult[0]);
+        Debug.Log(urlResult[1]);
+        */
     }
 
     // HTTP POST
@@ -83,16 +91,18 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
         var responseString = await response.Content.ReadAsStringAsync();
-        Location location =
-                        JsonSerializer.Deserialize<Location>(responseString);
-        /*
-        JObject rss = JObject.Parse(responseString);
-        string rssX = (string)rss["x"];
-        string rssY = (string)rss["x"];
-        */
+        Location location;
+        location = JsonUtility.FromJson<Location>(responseString);
+        //Location location =
+        //                JsonSerializer.Deserialize<Location>(JsonReader(responseString));
+
+//        JObject rss = JObject.Parse(responseString);
+//        string rssX = (string)rss["x"];
+//        string rssY = (string)rss["x"];
+        
         int[] result = new int[2];
-        //            result[0] = Int16.Parse(rssX);
-        //          result[1] = Int16.Parse(rssY);
+//        result[0] = System.Int16.Parse(rssX);
+//        result[1] = System.Int16.Parse(rssY);
         result[0] = location.x;
         result[1] = location.y;
         return result;
