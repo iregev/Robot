@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 // https://stackoverflow.com/questions/56767566/how-to-always-get-the-tip-of-a-raycast
 public class handray : MonoBehaviour, IMixedRealityPointerHandler
 {
-    public GameObject spawnObject;
+    //public GameObject spawnObject;
 
     public InputSourceType sourceType = InputSourceType.Hand;
     private static readonly HttpClient client = new HttpClient();
@@ -21,15 +21,15 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
     // Start is called before the first frame update
     void OnEnable()
     {
-        CoreServices.InputSystem.Register(gameObject);
-
+        //CoreServices.InputSystem.Register(gameObject);
+        CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
     }
 
     private void OnDisable()
     {
         if (CoreServices.InputSystem != null)
         {
-            CoreServices.InputSystem.Unregister(gameObject);
+            CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
     }
      
@@ -81,8 +81,6 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
 
     public async Task<int[]> Move(int meters, int pivotDegrees)
     {
-        // TODO remove
-        URL="192.168.0.187";
         // Stop
         var urlStop = $"http://{URL}:8001/WebService2/stop";
         var valuesStop = new Dictionary<string, string>
@@ -109,7 +107,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         //                JsonSerializer.Deserialize<Location>(JsonReader(responseString));
 
 //        JObject rss = JObject.Parse(responseString);
-//        string rssX = (string)rss["x"];
+//        string rssX = (string)rss["x"]; 
 //        string rssY = (string)rss["x"];
 */        
         int[] result = new int[2];
