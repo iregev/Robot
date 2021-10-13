@@ -91,7 +91,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
         var responseString = await response.Content.ReadAsStringAsync();
-        Location location;
+/*        Location location;
         location = JsonUtility.FromJson<Location>(responseString);
         //Location location =
         //                JsonSerializer.Deserialize<Location>(JsonReader(responseString));
@@ -99,12 +99,12 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
 //        JObject rss = JObject.Parse(responseString);
 //        string rssX = (string)rss["x"];
 //        string rssY = (string)rss["x"];
-        
+*/        
         int[] result = new int[2];
 //        result[0] = System.Int16.Parse(rssX);
 //        result[1] = System.Int16.Parse(rssY);
-        result[0] = location.x;
-        result[1] = location.y;
+        result[0] = 0;
+        result[1] = 0;
         return result;
 
     }
