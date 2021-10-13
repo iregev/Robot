@@ -20,10 +20,11 @@ public class turn180 : MonoBehaviour
     {
         var url = $"http://{URL}:8001/WebService2/method";
         // Stop
+        int zer = 0;
         var values = new Dictionary<string, string>
         {
-            { "distance", 0.ToString() },
-            { "angle", 0.ToString()}
+            { "distance", zer.ToString() },
+            { "angle", zer.ToString()}
         };
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
