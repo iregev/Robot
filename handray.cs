@@ -83,11 +83,11 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         //Debug.Log(startPoint - endPoint);
         if (theta <= 180)
         {
-            theta = theta - 10;
+            theta -= 10;
         } else
         {
             theta = 360 - theta;
-            theta = theta * (-1);
+            theta *= -1;
         }
 
         Debug.Log($"{norm}, {theta}");
@@ -115,10 +115,11 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
     {
         var url = $"http://{URL}:8001/WebService2/method";
         // Stop
+        int zer = 0;
         var values = new Dictionary<string, string>
         {
-            { "distance", 0.ToString() },
-            { "angle", 0.ToString()}
+            { "distance",zer.ToString() },
+            { "angle", zer.ToString()}
         };
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
