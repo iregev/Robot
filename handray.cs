@@ -81,6 +81,8 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
 
     public async Task<int[]> Move(int meters, int pivotDegrees)
     {
+        // TODO remove
+        URL="192.168.0.187";
         // Stop
         var urlStop = $"http://{URL}:8001/WebService2/stop";
         var valuesStop = new Dictionary<string, string>
