@@ -80,6 +80,15 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
 
     public async Task<int[]> Move(int meters, int pivotDegrees)
     {
+        // Stop
+        var urlStop = $"http://{URL}:8001/WebService2/stop";
+        var valuesStop = new Dictionary<string, string>
+                {
+                    { "null1", "null_val" }
+                };
+        var contentStop = new FormUrlEncodedContent(valuesStop);
+        var responseStop = await client.PostAsync(urlStop, contentStop);
+        // Drive
         var url = $"http://{URL}:8001/WebService2/method";
         //Console.WriteLine(url);
         var cm = meters * 100;
@@ -90,7 +99,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
                 };
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
-        var responseString = await response.Content.ReadAsStringAsync();
+        //var responseString = await response.Content.ReadAsStringAsync();
 /*        Location location;
         location = JsonUtility.FromJson<Location>(responseString);
         //Location location =
@@ -108,12 +117,5 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         return result;
 
     }
-
-
-
-
-
-
-
 }
 
