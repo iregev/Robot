@@ -7,16 +7,22 @@ using System.Net.Http;
 using System.Threading.Tasks;
 //using Newtonsoft.Json.Linq;
 
+
+
 // https://stackoverflow.com/questions/56067810/how-do-i-get-the-position-of-an-active-mrtk-pointer
 // https://stackoverflow.com/questions/56767566/how-to-always-get-the-tip-of-a-raycast
 public class handray : MonoBehaviour, IMixedRealityPointerHandler
 {
     //public GameObject spawnObject;
 
+
+
     public InputSourceType sourceType = InputSourceType.Hand;
     private static readonly HttpClient client = new HttpClient();
     public string URL;
     // Robot1: 192.168.0.187
+
+
 
     // Start is called before the first frame update
     void OnEnable()
@@ -25,6 +31,8 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
     }
 
+
+
     private void OnDisable()
     {
         if (CoreServices.InputSystem != null)
@@ -32,22 +40,32 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
             CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
         }
     }
-     
+
+
+
     public void OnPointerDown(MixedRealityPointerEventData eventData)
     {
         if (eventData.InputSource.SourceType == sourceType)
         {
 
+
+
         }
     }
+
+
 
     public void OnPointerDragged(MixedRealityPointerEventData eventData)
     {
     }
 
+
+
     public void OnPointerUp(MixedRealityPointerEventData eventData)
     {
     }
+
+
 
     public void OnPointerClicked(MixedRealityPointerEventData eventData)
     {
@@ -57,20 +75,22 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         // Norm
         var proj = endPoint - startPoint;
         proj.y = 0;
-        var norm=proj.magnitude;
+        var norm = proj.magnitude;
         var theta = Vector3.Angle(new Vector3(endPoint.x, 0, endPoint.z), new Vector3(startPoint.x, 0, startPoint.z));
-        Debug.Log(startPoint);
-        Debug.Log(endPoint);
-        Debug.Log(startPoint - endPoint);
-        Debug.Log(norm);
-        Debug.Log(theta);
-        /*
+        //Debug.Log(startPoint);
+        //Debug.Log(endPoint);
+        //Debug.Log(startPoint - endPoint);
+        Debug.Log($"{norm}, {theta}");
+
         var urlTask = Task.Run(() => Move((int)norm, (int)theta));
+        /*
         var urlResult = urlTask.Result;
         Debug.Log(urlResult[0]);
         Debug.Log(urlResult[1]);
         */
     }
+
+
 
     // HTTP POST
     public class Location
@@ -79,44 +99,46 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         public int y { get; set; }
     }
 
+
+
     public async Task<int[]> Move(int meters, int pivotDegrees)
     {
-        // Stop
-        var urlStop = $"http://{URL}:8001/WebService2/stop";
-        var valuesStop = new Dictionary<string, string>
-                {
-                    { "null1", "null_val" }
-                };
-        var contentStop = new FormUrlEncodedContent(valuesStop);
-        var responseStop = await client.PostAsync(urlStop, contentStop);
-        // Drive
         var url = $"http://{URL}:8001/WebService2/method";
-        //Console.WriteLine(url);
-        var cm = meters * 100;
+        // Stop
         var values = new Dictionary<string, string>
-                {
-                    { "distance", cm.ToString() },
-                    { "angle", pivotDegrees.ToString()}
-                };
+        {
+            { "distance", 0.ToString() },
+            { "angle", 0.ToString()}
+        };
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(url, content);
+
+        // Drive
+        //Console.WriteLine(url);
+        var cm = meters * 100;
+        //var url = "http://192.168.0.187:8001/WebService2/method";
+        //Debug.Log(url);
+        values = new Dictionary<string, string>
+        {
+            { "distance", cm.ToString() },
+            { "angle", pivotDegrees.ToString()}
+        };
+        content = new FormUrlEncodedContent(values);
+        response = await client.PostAsync(url, content);
         //var responseString = await response.Content.ReadAsStringAsync();
-/*        Location location;
+        /* Location location;
         location = JsonUtility.FromJson<Location>(responseString);
         //Location location =
-        //                JsonSerializer.Deserialize<Location>(JsonReader(responseString));
-
-//        JObject rss = JObject.Parse(responseString);
-//        string rssX = (string)rss["x"]; 
-//        string rssY = (string)rss["x"];
-*/        
+        // JsonSerializer.Deserialize<Location>(JsonReader(responseString));
+        // JObject rss = JObject.Parse(responseString);
+        // string rssX = (string)rss["x"];
+        // string rssY = (string)rss["x"];
+        */
         int[] result = new int[2];
-//        result[0] = System.Int16.Parse(rssX);
-//        result[1] = System.Int16.Parse(rssY);
+        // result[0] = System.Int16.Parse(rssX);
+        // result[1] = System.Int16.Parse(rssY);
         result[0] = 0;
         result[1] = 0;
         return result;
-
     }
 }
-
