@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Http;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 //using Newtonsoft.Json.Linq;
 
 
@@ -80,6 +81,15 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         //Debug.Log(startPoint);
         //Debug.Log(endPoint);
         //Debug.Log(startPoint - endPoint);
+        if (theta <= 180)
+        {
+            theta = theta - 10;
+        } else
+        {
+            theta = 360 - theta;
+            theta = theta * (-1);
+        }
+
         Debug.Log($"{norm}, {theta}");
 
         var urlTask = Task.Run(() => Move((int)norm, (int)theta));
@@ -141,4 +151,20 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         result[1] = 0;
         return result;
     }
+    /*
+    public GameObject buttonPrefab;
+    public GameObject panelToAttachButtonsTo;
+    void Start()//Creates a button and sets it up
+    {
+        GameObject button = (GameObject)Instantiate(buttonPrefab);
+        button.transform.SetParent(panelToAttachButtonsTo.transform);//Setting button parent
+        button.GetComponent<Button>().onClick.AddListener(OnClick);//Setting what button does when clicked
+                                                                   //Next line assumes button has child with text as first gameobject like button created from GameObject->UI->Button
+        button.transform.GetChild(0).GetComponent<Text>().text = "This is button text";//Changing text
+    }
+    void OnClick()
+    {
+        Debug.Log("clicked!");
+    }
+    */
 }
