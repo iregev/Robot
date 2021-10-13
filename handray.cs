@@ -16,6 +16,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
     public InputSourceType sourceType = InputSourceType.Hand;
     private static readonly HttpClient client = new HttpClient();
     public string URL;
+    // Robot1: 192.168.0.187
 
     // Start is called before the first frame update
     void OnEnable()
