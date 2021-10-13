@@ -80,7 +80,7 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
 
     public async Task<int[]> Move(int meters, int pivotDegrees)
     {
-        var url = $"http://{URL}:8001/WebService1/move_webservice";
+        var url = $"http://{URL}:8001/WebService2/method";
         //Console.WriteLine(url);
         var cm = meters * 100;
         var values = new Dictionary<string, string>
