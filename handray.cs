@@ -21,8 +21,8 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
     public InputSourceType sourceType = InputSourceType.Hand;
     private static readonly HttpClient client = new HttpClient();
     public string URL;
-    // Robot1: 192.168.0.187
-
+    // Neil: 192.168.0.193
+    // Buzz: 192.168.0.187
 
 
     // Start is called before the first frame update
@@ -71,6 +71,11 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
     public void OnPointerClicked(MixedRealityPointerEventData eventData)
     {
         var p = eventData.Pointer;
+        if (p is IMixedRealityNearPointer)
+        {
+            // Ignore near pointers, we only want the rays
+            return;
+        }
         var startPoint = p.Position;
         var endPoint = p.Result.Details.Point;
         // Norm
@@ -84,12 +89,17 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         if (theta <= 180)
         {
             theta -= 10;
-        } else
+        }
+        else
         {
             theta = 360 - theta;
             theta *= -1;
         }
 
+        if (norm > 5)
+        {
+            norm = 5;
+        }
         Debug.Log($"{norm}, {theta}");
 
         var urlTask = Task.Run(() => Move((int)norm, (int)theta));
@@ -152,20 +162,4 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         result[1] = 0;
         return result;
     }
-    /*
-    public GameObject buttonPrefab;
-    public GameObject panelToAttachButtonsTo;
-    void Start()//Creates a button and sets it up
-    {
-        GameObject button = (GameObject)Instantiate(buttonPrefab);
-        button.transform.SetParent(panelToAttachButtonsTo.transform);//Setting button parent
-        button.GetComponent<Button>().onClick.AddListener(OnClick);//Setting what button does when clicked
-                                                                   //Next line assumes button has child with text as first gameobject like button created from GameObject->UI->Button
-        button.transform.GetChild(0).GetComponent<Text>().text = "This is button text";//Changing text
-    }
-    void OnClick()
-    {
-        Debug.Log("clicked!");
-    }
-    */
 }
