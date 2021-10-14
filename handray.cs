@@ -80,22 +80,25 @@ public class handray : MonoBehaviour, IMixedRealityPointerHandler
         var endPoint = p.Result.Details.Point;
         // Norm
         var proj = endPoint - startPoint;
+        int sign = (endPoint.x < startPoint.x) ? -1 : 1;
+
         proj.y = 0;
         var norm = proj.magnitude;
         var theta = Vector3.Angle(new Vector3(endPoint.x, 0, endPoint.z), new Vector3(startPoint.x, 0, startPoint.z));
+        theta = theta * sign;
         //Debug.Log(startPoint);
         //Debug.Log(endPoint);
         //Debug.Log(startPoint - endPoint);
-        if (theta <= 180)
+        /*if (theta <= 180)
         {
-            theta -= 10;
-        }
+            theta -= 1;
+        } 
         else
         {
             theta = 360 - theta;
             theta *= -1;
         }
-
+        */
         if (norm > 5)
         {
             norm = 5;
